@@ -6,7 +6,7 @@ import FilmInfoButton from './FilmInfoButton';
 
 function MovieCard({image, rating, youtubeVideoId}) {
   const [isOpenModal, setIsOpenModal] = useState(false);
-
+  //  useCallback используется здесь что бы только при завпуске определить функцию открытия окна и не переопределять её каждый раз после перересовки страницы
   const openTrailer = useCallback(() => {
     setIsOpenModal(true);
   }, [])
