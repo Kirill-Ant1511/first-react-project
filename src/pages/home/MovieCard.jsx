@@ -1,11 +1,16 @@
-import { useState } from 'react'
-import { FavoriteButton } from './FavoriteButton'
-import './MovieCard.css'
-import { Modal } from './Components/ui/Modal';
-import { TrailerButton } from './TrailerButton';
+import { memo, useCallback, useState } from 'react'
+import FavoriteButton from './FavoriteButton'
+import { Modal } from '../../Components/ui/Modal';
+import { Link } from 'react-router-dom';
+import FilmInfoButton from './FilmInfoButton';
 
-export function MovieCard({image, rating, youtubeVideoId}) {
+function MovieCard({image, rating, youtubeVideoId}) {
   const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const openTrailer = useCallback(() => {
+    setIsOpenModal(true);
+  }, [])
+
   return <div className='relative rounded-xl w-[200px] h-auto'>
     <img src={image} className='rounded-xl h-full'/>
 
@@ -26,12 +31,14 @@ export function MovieCard({image, rating, youtubeVideoId}) {
 
     <div className='absolute right-0 top-0 m-2 flex flex-row-reverse'>
       <FavoriteButton />
-      <button onClick={() => {
-        setIsOpenModal(true)
-      }} className="flex items-center justify-center p-2 rounded-xl h-[40px] w-[40px] hover:border-red-200 hover:border-2 transition-all duration-200 ease">
+      <button onClick={openTrailer} className="flex items-center justify-center p-2 rounded-xl h-[40px] w-[40px] hover:border-red-200 hover:border-2 transition-all duration-200 ease">
         <img src="/camera.png"/>
       </button>
+
+      <FilmInfoButton path={`/movie/${youtubeVideoId}`}/>
     </div>
     <div className='absolute left-0 bottom-0 m-2 font-bold text-white'>IMBd: {rating}</div>
   </div>
 }
+
+export default memo(MovieCard);

@@ -1,23 +1,28 @@
-import { useState } from 'react'
-import { MovieCard } from './MovieCard'
-import { MOVIES } from './movies.data'
-import { useDebounce } from './hooks/useDebounce';
-import { useTheme } from './hooks/useTheme';
+import { useMemo, useState } from 'react'
+import MovieCard from './MovieCard'
+import { MOVIES } from '../../constant/movies.data'
+import { useDebounce } from '../../hooks/useDebounce';
+import { useTheme } from '../../hooks/useTheme';
 function App() {
   const {theme, toggleTheme} = useTheme();
 
   const [searchTerm, setSearchTerm] = useState('');
   const searchDebounce = useDebounce(searchTerm, 400);
 
-  const movies = MOVIES.filter(movie => movie.name.toLowerCase().includes(searchDebounce.toLowerCase()));
+  const movies = useMemo(() => {
+    console.log("mevies change");
+    return MOVIES.filter(movie => movie.name.toLowerCase().includes(searchDebounce.toLowerCase()));
+  }, [searchDebounce]);
+
+
 
   return (
-    <div className='min-h-screen w-full dark:bg-black dark:text-white bg-white text-black px-6 transition-all duration-150'>
+    <div className='min-h-screen w-full dark:bg-black dark:text-white bg-white text-black transition-all duration-150 px-5'>
       <header className='flex justify-between items-center'>
         <img 
           src="./Netflix-big.png" 
-          alt="Netflix" 
-          className='h-20' 
+          alt="Netflix"
+          width={100}
         />
         <div className='flex gap-5'>
           <input 
